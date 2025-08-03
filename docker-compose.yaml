@@ -1,0 +1,63 @@
+services:
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  triton:
+    build:
+      context: .
+      dockerfile: DockerfileTriton
+    image: tritonserver
+    container_name: tritonserver
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ./models:/models
+    command: >
+      tritonserver
+      --model-repository=/models
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+      - "8002:8002"
+
+  web:
+    build:
+      context: ./caption_voice_web
+      dockerfile: ./Dockerfile
+    container_name: caption_voice_web
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - triton
+    environment:
+      - CONFIG_PATH=/app/config.yaml
+
+  bot:
+    build:
+      context: ./caption_voice_tg
+      dockerfile: ./Dockerfile
+    container_name: caption_voice_bot
+    depends_on:
+      - redis
+      - web
+    environment:
+      - CONFIG_PATH=/app/config.yaml
+    env_file:
+      - ./caption_voice_tg/.env
+
+volumes:
+  redis-data:

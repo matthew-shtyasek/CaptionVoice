@@ -1,0 +1,33 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Python virtualenv (если запускаешь что-то из инфры)
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Logs
+*.log
+*.tmp
+
+# Build cache
+.cache/
+__pycache__/
+*.pyc
+
+# Docker artifacts
+*.pid
+*.sock
+
+# Misc
+*.out
+*.bak
+
+
+
+wheels

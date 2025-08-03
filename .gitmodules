@@ -1,0 +1,9 @@
+[submodule "caption_voice_tg"]
+	path = caption_voice_tg
+	url = https://github.com/matthew-shtyasek/CaptionVoice_bot.git
+[submodule "caption_voice_web"]
+	path = caption_voice_web
+	url = https://github.com/matthew-shtyasek/CaptionVoice_web.git
+[submodule "models"]
+	path = models
+	url = https://github.com/matthew-shtyasek/CaptionVoice_models.git
