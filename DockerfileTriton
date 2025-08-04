@@ -2,7 +2,8 @@ FROM nvcr.io/nvidia/tritonserver:25.06-py3
 
 RUN apt-get update && apt-get install -y python3-pip
 
-COPY ./wheels /wheels
-RUN pip3 install /wheels/*.whl
-RUN pip3 install sentencepiece transformers
-RUN pip3 install numpy requests
+COPY requirements.txt .
+RUN pip download -r requirements.txt -d /wheels \
+    --extra-index-url https://download.pytorch.org/whl/nightly/cu128
+
+RUN pip install /wheels/*.whl
